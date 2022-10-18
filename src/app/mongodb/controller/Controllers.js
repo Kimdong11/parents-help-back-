@@ -14,17 +14,21 @@ export const handleLookupRouter = (req, res) => {
 export const handleCreteRouter = (req, res) => {
    console.log(req.body);
    const inputData = req.body;
-   const newData = new Person({ name: inputData.name, phoneNum: inputData.phoneNum, address: inputData.address });
+   if (inputData.name !== null && inputData.phoneNum !== "" && inputData.address !== null) {
+      const newData = new Person({ name: inputData.name, phoneNum: inputData.phoneNum, address: inputData.address });
    newData.save();
    return res.send('Success');
+   } else {
+      return res.send("Failed")
+   }
+   
 };
 
 export const handleSearchRouter = (req, res) => {
    const inputData = req.body;
-   console.log(typeof inputData.keyword);
    Person.find(inputData.keyword.length == 11 ? { phoneNum: inputData.keyword } : { name: inputData.keyword })
       .then(peopleInfo => {
-         if (!peopleInfo.length) return res.status(404).send({ err: 'peopleInfo not found' });
+         if (!peopleInfo.length) return res.status(404).send(null);
          return res.json(peopleInfo);
       })
       .catch(err => res.status(500).send(err));
