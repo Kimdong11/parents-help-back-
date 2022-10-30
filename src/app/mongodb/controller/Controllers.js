@@ -2,6 +2,11 @@ import Person from '../model/model';
 import CryptoJS from 'crypto-js';
 import request from 'request';
 
+const SERVICE_ID = process.env.SERVICE_ID
+const SECRET_KEY = process.env.SECRET_KEY
+const ACCESS_KEY = process.env.ACCESS_KEY
+const CALL_NUM = process.env.CALL_NUM
+
 export const handleLookupRouter = (req, res) => {
    Person.find({})
       .then(peopleInfo => {
@@ -67,22 +72,22 @@ export const handleSendMessageRouter = (req, res) => {
       var user_phone_number = phoneNum; //수신 전화번호 기입
       var resultCode = 404;
       const date = Date.now().toString();
-      const uri = 'ncp:sms:kr:294897668574:address_bok'; //서비스 ID
-      const secretKey = 'mRPgGE5N8Mihu9B9L7DjysQ6cLAdqB0oAvrpxSmo'; // Secret Key
-      const accessKey = 'Rh2PLA1KdnZ6Y9rBuPkb'; //Access Key
+      // const uri = 'ncp:sms:kr:294897668574:address_bok'; //서비스 ID
+      // const secretKey = 'mRPgGE5N8Mihu9B9L7DjysQ6cLAdqB0oAvrpxSmo'; // Secret Key
+      // const accessKey = 'Rh2PLA1KdnZ6Y9rBuPkb'; //Access Key
       const method = 'POST';
       const space = ' ';
       const newLine = '\n';
-      const url = `https://sens.apigw.ntruss.com/sms/v2/services/${uri}/messages`;
-      const url2 = `/sms/v2/services/${uri}/messages`;
-      const hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, secretKey);
+      const url = `https://sens.apigw.ntruss.com/sms/v2/services/${SERVICE_ID}/messages`;
+      const url2 = `/sms/v2/services/${SERVICE_ID}/messages`;
+      const hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, SECRET_KEY);
       hmac.update(method);
       hmac.update(space);
       hmac.update(url2);
       hmac.update(newLine);
       hmac.update(date);
       hmac.update(newLine);
-      hmac.update(accessKey);
+      hmac.update(ACCESS_KEY);
       const hash = hmac.finalize();
       const signature = hash.toString(CryptoJS.enc.Base64);
       request(
@@ -92,14 +97,14 @@ export const handleSendMessageRouter = (req, res) => {
             uri: url,
             headers: {
                'Contenc-type': 'application/json; charset=utf-8',
-               'x-ncp-iam-access-key': accessKey,
+               'x-ncp-iam-access-key': ACCESS_KEY,
                'x-ncp-apigw-timestamp': date,
                'x-ncp-apigw-signature-v2': signature,
             },
             body: {
                type: 'SMS',
                countryCode: '82',
-               from: '01098982660', //"발신번호기입",
+               from: CALL_NUM, //"발신번호기입",
                content: req.body.message, //문자내용 기입,,
                messages: [{ to: `${user_phone_number}` }],
             },
