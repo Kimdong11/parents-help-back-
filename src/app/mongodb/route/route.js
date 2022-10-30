@@ -21,7 +21,3 @@ searchRouter.post('/search-buyer', handleSearchRouter);
 deleteRouter.post('/delete-buyer', handleDeleteRouter);
 updateRouter.post('/update-buyer', handleUpdateRouter);
 sendMessageRouter.post('/send-message', handleSendMessageRouter);
-
-// c4be9bbb8cd645178730b1b07aa1d088
-
-// tQabw1aAtQ8vwnVFhZh1A0LGXta86lMiuPjaRKC1
