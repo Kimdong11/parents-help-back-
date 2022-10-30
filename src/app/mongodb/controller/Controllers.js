@@ -72,9 +72,6 @@ export const handleSendMessageRouter = (req, res) => {
       var user_phone_number = phoneNum; //수신 전화번호 기입
       var resultCode = 404;
       const date = Date.now().toString();
-      // const uri = 'ncp:sms:kr:294897668574:address_bok'; //서비스 ID
-      // const secretKey = 'mRPgGE5N8Mihu9B9L7DjysQ6cLAdqB0oAvrpxSmo'; // Secret Key
-      // const accessKey = 'Rh2PLA1KdnZ6Y9rBuPkb'; //Access Key
       const method = 'POST';
       const space = ' ';
       const newLine = '\n';
