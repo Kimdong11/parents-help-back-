@@ -1,11 +1,9 @@
 import Person from '../model/model';
 import CryptoJS from 'crypto-js';
 import request from 'request';
+import dotenv from "dotenv"
 
-const SERVICE_ID = process.env.SERVICE_ID
-const SECRET_KEY = process.env.SECRET_KEY
-const ACCESS_KEY = process.env.ACCESS_KEY
-const CALL_NUM = process.env.CALL_NUM
+
 
 export const handleLookupRouter = (req, res) => {
    Person.find({})
@@ -67,7 +65,13 @@ export const handleUpdateRouter = (req, res) => {
 };
 
 export const handleSendMessageRouter = (req, res) => {
-   let result;
+   dotenv.config()
+
+   const SERVICE_ID = process.env.SERVICE_ID
+   const SECRET_KEY = process.env.SECRET_KEY
+   const ACCESS_KEY = process.env.ACCESS_KEY
+   const CALL_NUM = process.env.CALL_NUM
+
    function send_message(phoneNum) {
       var user_phone_number = phoneNum; //수신 전화번호 기입
       var resultCode = 404;
@@ -115,6 +119,7 @@ export const handleSendMessageRouter = (req, res) => {
          },
       );
    }
+
    req.body.phoneNum.forEach(phoneNum => {
       send_message(phoneNum);
    });
