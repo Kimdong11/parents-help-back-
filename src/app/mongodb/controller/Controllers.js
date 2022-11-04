@@ -104,7 +104,7 @@ export const handleSendMessageRouter = (req, res) => {
             json: true,
             uri: url,
             headers: {
-               'Contenc-type': 'application/json; charset=utf-8',
+               'Content-type': 'application/json; charset=utf-8',
                'x-ncp-iam-access-key': ACCESS_KEY,
                'x-ncp-apigw-timestamp': date,
                'x-ncp-apigw-signature-v2': signature,
