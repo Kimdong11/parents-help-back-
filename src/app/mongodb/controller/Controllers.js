@@ -66,11 +66,18 @@ export const handleUpdateRouter = (req, res) => {
 
 export const handleSendMessageRouter = (req, res) => {
    dotenv.config()
-
    const SERVICE_ID = process.env.SERVICE_ID
    const SECRET_KEY = process.env.SECRET_KEY
    const ACCESS_KEY = process.env.ACCESS_KEY
    const CALL_NUM = process.env.CALL_NUM
+
+   const messageType = () => {
+      if (req.body.message.length <= 40) {
+         return "SMS"
+      }else {
+         return "LMS"
+      }
+   }
 
    function send_message(phoneNum) {
       var user_phone_number = phoneNum; //수신 전화번호 기입
@@ -103,7 +110,7 @@ export const handleSendMessageRouter = (req, res) => {
                'x-ncp-apigw-signature-v2': signature,
             },
             body: {
-               type: 'SMS',
+               type: messageType(),
                countryCode: '82',
                from: CALL_NUM, //"발신번호기입",
                content: req.body.message, //문자내용 기입,,
